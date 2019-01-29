@@ -188,7 +188,7 @@ export class CodeItem extends vscode.TreeItem {
 		super(type == "Library" ? record.name : type, collapsibleState);
 		
         this.command = {
-            command: 'extension.openOperationTypeCode',
+            command: 'extension.openCode',
             title: 'Open ' + type,
             arguments: [record, type]
         }

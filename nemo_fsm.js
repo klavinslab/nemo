@@ -5,11 +5,16 @@ const fs = require("fs-extra");
 
 class NemoFSM extends FSM {
 
-    constructor(context,operation_type, code_type) {
+    constructor(context, record, code_type) {
         super();
         this.context = context;
-        this.operation_type = operation_type;
+        this.record = record;
         this.code_type = code_type;
+        if ( code_type == "library" ) {
+            this.type = "Library";
+        } else {
+            this.type = "OperationType";
+        }
     }
 
     // States ///////////////////////////////////////////////////////////////////////////////////////   
@@ -29,7 +34,7 @@ class NemoFSM extends FSM {
             },
     
             local_copy_differs: {
-                epsilon: () => this.warn(`Local copy of ${this.code_type} for ${this.operation_type.name} differs from server's.`
+                epsilon: () => this.warn(`Local copy of ${this.code_type} for ${this.record.name} differs from server's.`
                                         + "Push it or remove it to proceed.")
                    .then(() => this.open_code())
                    .then(() => 'start')
@@ -50,7 +55,11 @@ class NemoFSM extends FSM {
     retrieve_code() {
         let fsm = this;
         return AQ.Code
-            .where({parent_class: "OperationType", parent_id: fsm.operation_type.id, name: fsm.code_type})
+            .where({
+                parent_class: fsm.type, 
+                parent_id: fsm.record.id, 
+                name: fsm.code_type == "library" ? "source" : fsm.code_type 
+            })
             .then(codes => {
                 fsm.code = codes.length > 0 ? codes.pop().content : `# ${fsm.code_type}`;
                 return fsm.code;
@@ -59,9 +68,11 @@ class NemoFSM extends FSM {
 
     get file_name() {
         let str = this.context.storagePath + "/" + 
-               this.operation_type.name + "/" + 
+               this.type + "/" + 
+               this.record.name + "/" + 
                this.code_type;
         str += this.code_type == 'documentation' ? '.md' : '.rb';
+        console.log(str);
         return str
     }
 

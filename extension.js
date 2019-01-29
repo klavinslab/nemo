@@ -42,14 +42,22 @@ function activate(context) {
 		}
 	}
 
-	function open(operation_type, component) { 
+	function open(record, component) { 
 
-		if ( initialized ) {
-			operation_type
-				.fsms[component.toLowerCase()]
-				.dispatch('open')
-				.then(() => console.log("ok"))
-				.catch(e => console.log(e));
+		if ( record ) {		
+			if ( record.fsms ) {
+				record.fsms[component.toLowerCase()]
+				    .dispatch('open')
+				    .then(() => console.log("open ok"))
+				    .catch(() => console.log("open not ok"));
+			} else if ( record.fsm ) {
+				vscode.window.showInformationMessage("opening libnrary");
+				record.fsm.dispatch('open')
+			    	.then(() => console.log("open ok"))
+				    .catch(() => console.log("open not ok"))				
+			} else {
+				vscode.window.showInformationMessage("no fsm found");
+			}
 		} else {
 			vscode.window.showInformationMessage('Nemo is not yet intialized. Try again.');
 		}
@@ -57,7 +65,7 @@ function activate(context) {
 	}
 
 	context.subscriptions.push(vscode.commands.registerCommand('extension.connect', connect));
-	context.subscriptions.push(vscode.commands.registerCommand('extension.openOperationTypeCode',open));	
+	context.subscriptions.push(vscode.commands.registerCommand('extension.openCode',open));	
 	
 }
 

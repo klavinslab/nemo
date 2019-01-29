@@ -214,7 +214,7 @@ var CodeItem = /** @class */ (function (_super) {
         };
         _this.contextValue = 'CodeItem';
         _this.command = {
-            command: 'extension.openOperationTypeCode',
+            command: 'extension.openCode',
             title: 'Open ' + type,
             arguments: [record, type]
         };

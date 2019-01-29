@@ -45,7 +45,12 @@
 				"command": "extension.connect",
 				"title": "Connect",
 				"category": "Nemo"
-			}
+			},
+			{
+				"command": "extension.openCode",
+				"title": "Open Code",
+				"category": "Nemo"
+			}			
 		]
 	},
 	"scripts": {
