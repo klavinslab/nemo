@@ -31,7 +31,7 @@ function activate(context) {
 				}				
 				vscode.window.showInformationMessage('Found ' + operations_types.length + ' operation types');
 				vscode.window.registerTreeDataProvider(
-					'aquariumOperationTypes',
+					'aquariumTree',
 					new provider.AquariumTreeProvider(operations_types,libraries)
 				);
 				initialized = true;

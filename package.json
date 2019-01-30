@@ -10,10 +10,52 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.connect"
+		"onCommand:extension.connect",
+		"onView:aquariumTree"
 	],
 	"main": "./extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "aquarium-explorer",
+					"title": "Package Explorer",
+					"icon": "media/aquarium.svg"
+				}
+			]
+		},
+		"views": {
+			"aquarium-explorer": [
+				{
+					"id": "aquariumTree",
+					"name": "Aquarium"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "extension.connect",
+				"title": "Connect",
+				"category": "Nemo",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}						
+			},
+			{
+				"command": "extension.openCode",
+				"title": "Open Code",
+				"category": "Nemo"
+			}
+		],
+		"menus": {
+			"view/title": [
+			  {
+				"command": "extension.connect",
+				"group": "navigation"
+			  }
+			]
+		},
 		"configuration": {
 			"type": "object",
 			"title": "Nemo",
@@ -31,27 +73,7 @@
 					"default": "aquarium"
 				}
 			}
-		},
-		"views": {
-			"explorer": [
-				{
-					"id": "aquariumOperationTypes",
-					"name": "Aquarium"
-				}
-			]
-		},
-		"commands": [
-			{
-				"command": "extension.connect",
-				"title": "Connect",
-				"category": "Nemo"
-			},
-			{
-				"command": "extension.openCode",
-				"title": "Open Code",
-				"category": "Nemo"
-			}			
-		]
+		}		
 	},
 	"scripts": {
 		"postinstall": "node ./node_modules/vscode/bin/install",
