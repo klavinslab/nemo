@@ -46,26 +46,34 @@ function activate(context) {
 
 		if ( record ) {		
 			if ( record.fsms ) {
-				record.fsms[component.toLowerCase()]
-				    .dispatch('open')
-				    .then(() => console.log("open ok"))
-				    .catch(() => console.log("open not ok"));
+				record.fsms[component.toLowerCase()].dispatch('open')
 			} else if ( record.fsm ) {
-				vscode.window.showInformationMessage("opening libnrary");
-				record.fsm.dispatch('open')
-			    	.then(() => console.log("open ok"))
-				    .catch(() => console.log("open not ok"))				
-			} else {
-				vscode.window.showInformationMessage("no fsm found");
-			}
+				record.fsm.dispatch('open')			
+			} 
 		} else {
 			vscode.window.showInformationMessage('Nemo is not yet intialized. Try again.');
 		}
 
 	}
 
+	function push(record, component) {
+		console.log("push")
+		if ( record ) {		
+			if ( record.fsms ) {
+				console.log("push an ot");				
+				record.fsms[component.toLowerCase()].dispatch('push')
+			} else if ( record.fsm ) {
+				console.log("push a lib");
+				record.fsm.dispatch('push');	
+			} 
+		} else {
+			vscode.window.showInformationMessage('Nemo is not yet intialized. Try again.');
+		}
+	}
+
 	context.subscriptions.push(vscode.commands.registerCommand('extension.connect', connect));
 	context.subscriptions.push(vscode.commands.registerCommand('extension.openCode',open));	
+	context.subscriptions.push(vscode.commands.registerCommand('extension.pushCode',push));	
 	
 }
 

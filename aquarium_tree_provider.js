@@ -100,10 +100,11 @@ var TopLevelItem = /** @class */ (function (_super) {
         _this.collapsibleState = collapsibleState;
         _this.command = command;
         _this.iconPath = {
-            light: path.join(__filename, '..', '..', 'resources', 'light', 'OTTreeItem.svg'),
-            dark: path.join(__filename, '..', '..', 'resources', 'dark', 'OTTreeItem.svg')
+            light: path.join(__filename, '..', 'resources', 'light', 'folder.svg'),
+            dark: path.join(__filename, '..', 'resources', 'dark', 'folder.svg')
         };
         _this.contextValue = 'TopLevelItem';
+        console.log(_this.iconPath);
         return _this;
     }
     Object.defineProperty(TopLevelItem.prototype, "is_top_level_item", {
@@ -137,8 +138,8 @@ var CategoryItem = /** @class */ (function (_super) {
         _this.collapsibleState = collapsibleState;
         _this.command = command;
         _this.iconPath = {
-            light: path.join(__filename, '..', '..', 'resources', 'light', 'OTTreeItem.svg'),
-            dark: path.join(__filename, '..', '..', 'resources', 'dark', 'OTTreeItem.svg')
+            light: path.join(__filename, '..', 'resources', 'light', 'folder.svg'),
+            dark: path.join(__filename, '..', 'resources', 'dark', 'folder.svg')
         };
         _this.contextValue = 'CategoryItem';
         return _this;
@@ -173,8 +174,8 @@ var OperationTypeItem = /** @class */ (function (_super) {
         _this.collapsibleState = collapsibleState;
         _this.command = command;
         _this.iconPath = {
-            light: path.join(__filename, '..', '..', 'resources', 'light', 'OTTreeItem.svg'),
-            dark: path.join(__filename, '..', '..', 'resources', 'dark', 'OTTreeItem.svg')
+            light: path.join(__filename, '..', 'resources', 'light', 'optype.svg'),
+            dark: path.join(__filename, '..', 'resources', 'dark', 'optype.svg')
         };
         _this.contextValue = 'OperationTypeItem';
         return _this;
@@ -208,16 +209,24 @@ var CodeItem = /** @class */ (function (_super) {
         _this.record = record;
         _this.type = type;
         _this.collapsibleState = collapsibleState;
-        _this.iconPath = {
-            light: path.join(__filename, '..', '..', 'resources', 'light', 'OTTreeItem.svg'),
-            dark: path.join(__filename, '..', '..', 'resources', 'dark', 'OTTreeItem.svg')
-        };
         _this.contextValue = 'CodeItem';
         _this.command = {
             command: 'extension.openCode',
             title: 'Open ' + type,
             arguments: [record, type]
         };
+        if (type == "Documentation") {
+            _this.iconPath = {
+                light: path.join(__filename, '..', 'resources', 'markdown.svg'),
+                dark: path.join(__filename, '..', 'resources', 'markdown.svg')
+            };
+        }
+        else {
+            _this.iconPath = {
+                light: path.join(__filename, '..', 'resources', 'ruby.svg'),
+                dark: path.join(__filename, '..', 'resources', 'ruby.svg')
+            };
+        }
         return _this;
     }
     Object.defineProperty(CodeItem.prototype, "is_code_item", {

@@ -10,7 +10,6 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.connect",
 		"onView:aquariumTree"
 	],
 	"main": "./extension.js",
@@ -35,17 +34,41 @@
 		"commands": [
 			{
 				"command": "extension.connect",
-				"title": "Connect",
+				"title": "Download Directory",
 				"category": "Nemo",
 				"icon": {
-					"light": "resources/light/refresh.svg",
-					"dark": "resources/dark/refresh.svg"
+					"light": "resources/light/download.svg",
+					"dark": "resources/dark/download.svg"
 				}						
 			},
 			{
 				"command": "extension.openCode",
 				"title": "Open Code",
 				"category": "Nemo"
+			},
+			{
+				"command": "extension.pullCode",
+				"title": "Pull",
+				"icon": {
+				  "light": "resources/light/download.svg",
+				  "dark": "resources/dark/download.svg"
+				}
+			},
+			{
+				"command": "extension.pushCode",
+				"title": "Push",
+				"icon": {
+				  "light": "resources/light/upload.svg",
+				  "dark": "resources/dark/upload.svg"
+				}
+			},
+			{
+				"command": "extension.showStatus",
+				"title": "Status",
+				"icon": {
+				  "light": "resources/light/status.svg",
+				  "dark": "resources/dark/status.svg"
+				}
 			}
 		],
 		"menus": {
@@ -54,6 +77,23 @@
 				"command": "extension.connect",
 				"group": "navigation"
 			  }
+			],
+			"view/item/context": [
+				{
+					"command": "extension.pullCode",
+					"when": "viewItem == CodeItem",
+					"group": "inline"
+				},
+				{
+					"command": "extension.pushCode",
+					"when": "viewItem == CodeItem",
+					"group": "inline"
+				},			
+				{
+					"command": "extension.showStatus",
+					"when": "viewItem == CodeItem",
+					"group": "inline"
+				}			  
 			]
 		},
 		"configuration": {

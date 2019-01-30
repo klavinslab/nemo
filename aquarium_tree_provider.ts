@@ -97,6 +97,7 @@ export class TopLevelItem extends vscode.TreeItem {
 		public readonly command?: vscode.Command
 	) {
 		super(name, collapsibleState);
+		console.log(this.iconPath);
 	}
 
 	get is_top_level_item() { return true; }
@@ -110,8 +111,8 @@ export class TopLevelItem extends vscode.TreeItem {
 	}
 
 	iconPath = {
-		light: path.join(__filename, '..', '..', 'resources', 'light', 'OTTreeItem.svg'),
-		dark: path.join(__filename, '..', '..', 'resources', 'dark', 'OTTreeItem.svg')
+		light: path.join(__filename, '..', 'resources', 'light', 'folder.svg'),
+		dark: path.join(__filename, '..', 'resources', 'dark', 'folder.svg')
 	};
 
 	contextValue = 'TopLevelItem';
@@ -140,8 +141,8 @@ export class CategoryItem extends vscode.TreeItem {
 	}
 
 	iconPath = {
-		light: path.join(__filename, '..', '..', 'resources', 'light', 'OTTreeItem.svg'),
-		dark: path.join(__filename, '..', '..', 'resources', 'dark', 'OTTreeItem.svg')
+		light: path.join(__filename, '..', 'resources', 'light', 'folder.svg'),
+		dark: path.join(__filename, '..', 'resources', 'dark', 'folder.svg')
 	};
 
 	contextValue = 'CategoryItem';
@@ -169,8 +170,8 @@ export class OperationTypeItem extends vscode.TreeItem {
 	}
 
 	iconPath = {
-		light: path.join(__filename, '..', '..', 'resources', 'light', 'OTTreeItem.svg'),
-		dark: path.join(__filename, '..', '..', 'resources', 'dark', 'OTTreeItem.svg')
+		light: path.join(__filename, '..', 'resources', 'light', 'optype.svg'),
+		dark: path.join(__filename, '..', 'resources', 'dark', 'optype.svg')
 	};
 
 	contextValue = 'OperationTypeItem';
@@ -191,9 +192,21 @@ export class CodeItem extends vscode.TreeItem {
             command: 'extension.openCode',
             title: 'Open ' + type,
             arguments: [record, type]
-        }
+		}
+		
+		if ( type == "Documentation" ) {
+			this.iconPath = {
+				light: path.join(__filename, '..', 'resources', 'markdown.svg'),
+				dark: path.join(__filename, '..', 'resources', 'markdown.svg')
+			};	
+		} else {
+			this.iconPath = {
+				light: path.join(__filename, '..', 'resources', 'ruby.svg'),
+				dark: path.join(__filename, '..', 'resources', 'ruby.svg')
+			};				
+		}
 
-	}
+	}	
 
 	get is_code_item() { return true; }	
 
@@ -204,11 +217,6 @@ export class CodeItem extends vscode.TreeItem {
 	get description(): string {
 		return "";
 	}
-
-	iconPath = {
-		light: path.join(__filename, '..', '..', 'resources', 'light', 'OTTreeItem.svg'),
-		dark: path.join(__filename, '..', '..', 'resources', 'dark', 'OTTreeItem.svg')
-	};
 
 	contextValue = 'CodeItem';
 

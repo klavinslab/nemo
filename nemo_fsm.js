@@ -24,17 +24,16 @@ class NemoFSM extends FSM {
         return {
 
             start: {
-                open: () => this.retrieve_code()
-                   .then(() => this.code_status()) // returns new state
+                open: () => this.retrieve_code().then(() => this.code_status()),
+                push: () => this.push_code().then(() => 'start')
             },
             
             local_copy_matches: {
-                epsilon: () => this.open_code()
-                   .then(() => 'start')
+                epsilon: () => this.open_code().then(() => 'start')
             },
     
             local_copy_differs: {
-                epsilon: () => this.warn(`Local copy of ${this.code_type} for ${this.record.name} differs from server's.`
+                epsilon: () => this.warn(`Local copy of ${this.code_type} for ${this.record.name} differs from server's. `
                                         + "Push it or remove it to proceed.")
                    .then(() => this.open_code())
                    .then(() => 'start')
@@ -61,18 +60,49 @@ class NemoFSM extends FSM {
                 name: fsm.code_type == "library" ? "source" : fsm.code_type 
             })
             .then(codes => {
-                fsm.code = codes.length > 0 ? codes.pop().content : `# ${fsm.code_type}`;
+                if ( codes.length > 0 ) {
+                    console.log("more than 0 codes");
+                    let temp = codes.pop();
+                    fsm.code = temp.content;
+                    console.log(fsm.code);
+                    fsm.code_id = temp.id;
+                } else {
+                    fsm.code = `# ${fsm.code_type}`;
+                    fsm.code_id = -1;
+                }
                 return fsm.code;
             })
     }
+
+    push_code() {
+
+        var controller;
+        if ( fsm.redord.model.model === "OperationType" ) {
+            controller = "operation_types";
+        } else {
+            controller = "libraries";
+        }
+        console.log({
+            id: fsm.code_id,
+            name: component_name == "library" ? "source" : component_name,
+            content: fsm.code
+        });
+        return AQ.post( "/" + controller + "/code", {
+            id: fsm.code_id,
+            name: component_name == "library" ? "source" : component_name,
+            content: fsm.code
+        })
+
+    }    
 
     get file_name() {
         let str = this.context.storagePath + "/" + 
                this.type + "/" + 
                this.record.name + "/" + 
+               this.record.category + "/" + 
                this.code_type;
         str += this.code_type == 'documentation' ? '.md' : '.rb';
-        console.log(str);
+        // console.log(str);
         return str
     }
 
