@@ -23,11 +23,12 @@ function activate(context) {
 					operations_types[i].fsms = {
 						protocol: new NemoFSM(context, operations_types[i], 'protocol'),
 						precondition: new NemoFSM(context, operations_types[i], 'precondition'),
-						documentation: new NemoFSM(context, operations_types[i], 'documentation')
+						documentation: new NemoFSM(context, operations_types[i], 'documentation'),
+						test: new NemoFSM(context, operations_types[i], 'test')
 					}
 				}
 				for (var i=0; i<libraries.length; i++) {
-					libraries[i].fsm = new NemoFSM(context, operations_types[i], 'library');
+					libraries[i].fsm = new NemoFSM(context, libraries[i], 'library');
 				}				
 				vscode.window.showInformationMessage('Found ' + operations_types.length + ' operation types');
 				vscode.window.registerTreeDataProvider(
@@ -42,38 +43,44 @@ function activate(context) {
 		}
 	}
 
-	function open(record, component) { 
-
-		if ( record ) {		
-			if ( record.fsms ) {
-				record.fsms[component.toLowerCase()].dispatch('open')
-			} else if ( record.fsm ) {
-				record.fsm.dispatch('open')			
-			} 
+	function fsm(record, component) {
+		if ( record.record_type == "OperationType" ) {
+			return record.fsms[component.toLowerCase()];
 		} else {
-			vscode.window.showInformationMessage('Nemo is not yet intialized. Try again.');
-		}
-
+			return record.fsm;
+		} 
 	}
 
-	function push(record, component) {
-		console.log("push")
-		if ( record ) {		
-			if ( record.fsms ) {
-				console.log("push an ot");				
-				record.fsms[component.toLowerCase()].dispatch('push')
-			} else if ( record.fsm ) {
-				console.log("push a lib");
-				record.fsm.dispatch('push');	
-			} 
+	function open(record, component) {
+		if ( record ) {	
+			fsm(record,component).dispatch('open');
 		} else {
 			vscode.window.showInformationMessage('Nemo is not yet intialized. Try again.');
 		}
 	}
 
-	context.subscriptions.push(vscode.commands.registerCommand('extension.connect', connect));
-	context.subscriptions.push(vscode.commands.registerCommand('extension.openCode',open));	
-	context.subscriptions.push(vscode.commands.registerCommand('extension.pushCode',push));	
+	function pull(codeItem) {
+		open(codeItem.record, codeItem.type);
+	}	
+
+	function push(codeItem) {
+		fsm(codeItem.record,codeItem.type.toLowerCase()).dispatch('push');
+	}
+
+	function status(codeItem) {
+		fsm(codeItem.record,codeItem.type.toLowerCase()).dispatch('status');
+	}
+
+	function test(codeItem) {
+		vscode.window.showWarningMessage("Server side testing not yet implemented.");
+	}	
+
+	context.subscriptions.push(vscode.commands.registerCommand('extension.connect',   connect));
+	context.subscriptions.push(vscode.commands.registerCommand('extension.openCode',  open));	
+	context.subscriptions.push(vscode.commands.registerCommand('extension.pullCode',  pull));	
+	context.subscriptions.push(vscode.commands.registerCommand('extension.pushCode',  push));	
+	context.subscriptions.push(vscode.commands.registerCommand('extension.showStatus',status));	
+	context.subscriptions.push(vscode.commands.registerCommand('extension.test',      test));	
 	
 }
 

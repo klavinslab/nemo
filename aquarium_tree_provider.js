@@ -84,6 +84,7 @@ var AquariumTreeProvider = /** @class */ (function () {
                 resolve([
                     new CodeItem(element.operation_type, "Protocol", vscode.TreeItemCollapsibleState.None),
                     new CodeItem(element.operation_type, "Precondition", vscode.TreeItemCollapsibleState.None),
+                    new CodeItem(element.operation_type, "Test", vscode.TreeItemCollapsibleState.None),
                     new CodeItem(element.operation_type, "Documentation", vscode.TreeItemCollapsibleState.None)
                 ]);
             });
@@ -104,7 +105,6 @@ var TopLevelItem = /** @class */ (function (_super) {
             dark: path.join(__filename, '..', 'resources', 'dark', 'folder.svg')
         };
         _this.contextValue = 'TopLevelItem';
-        console.log(_this.iconPath);
         return _this;
     }
     Object.defineProperty(TopLevelItem.prototype, "is_top_level_item", {
@@ -209,7 +209,6 @@ var CodeItem = /** @class */ (function (_super) {
         _this.record = record;
         _this.type = type;
         _this.collapsibleState = collapsibleState;
-        _this.contextValue = 'CodeItem';
         _this.command = {
             command: 'extension.openCode',
             title: 'Open ' + type,
@@ -226,6 +225,12 @@ var CodeItem = /** @class */ (function (_super) {
                 light: path.join(__filename, '..', 'resources', 'ruby.svg'),
                 dark: path.join(__filename, '..', 'resources', 'ruby.svg')
             };
+        }
+        if (type == "Test") {
+            _this.contextValue = 'TestCodeItem';
+        }
+        else {
+            _this.contextValue = 'CodeItem';
         }
         return _this;
     }

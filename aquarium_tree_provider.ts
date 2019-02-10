@@ -80,6 +80,7 @@ export class AquariumTreeProvider implements vscode.TreeDataProvider<vscode.Tree
                 resolve([
 					new CodeItem(element.operation_type, "Protocol",	  vscode.TreeItemCollapsibleState.None),
 					new CodeItem(element.operation_type, "Precondition",  vscode.TreeItemCollapsibleState.None),
+					new CodeItem(element.operation_type, "Test",          vscode.TreeItemCollapsibleState.None),
 					new CodeItem(element.operation_type, "Documentation", vscode.TreeItemCollapsibleState.None)
 				]);
             })
@@ -97,7 +98,6 @@ export class TopLevelItem extends vscode.TreeItem {
 		public readonly command?: vscode.Command
 	) {
 		super(name, collapsibleState);
-		console.log(this.iconPath);
 	}
 
 	get is_top_level_item() { return true; }
@@ -206,6 +206,12 @@ export class CodeItem extends vscode.TreeItem {
 			};				
 		}
 
+		if ( type == "Test" ) {
+			this.contextValue = 'TestCodeItem';
+		} else {
+			this.contextValue = 'CodeItem';
+		}
+
 	}	
 
 	get is_code_item() { return true; }	
@@ -217,7 +223,5 @@ export class CodeItem extends vscode.TreeItem {
 	get description(): string {
 		return "";
 	}
-
-	contextValue = 'CodeItem';
 
 }

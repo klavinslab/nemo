@@ -21,27 +21,35 @@ class NemoFSM extends FSM {
 
     states() {
 
+        let fsm = this;
+
         return {
 
             start: {
-                open: () => this.retrieve_code().then(() => this.code_status()),
-                push: () => this.push_code().then(() => 'start')
+                open: () => fsm.retrieve_code().then(() => fsm.code_status()),
+                push: () => fsm.push_code()
+                    .then(new_code => { fsm.code = new_code.data.content; fsm.code_id = new_code.data.id })
+                    .then(() => fsm.say(`Pushed ${fsm.code_type} to server. New version is ${fsm.code_id}.`))
+                    .then(() => 'start'),
+                status: () => fsm.code_status()
+                    .then(status => fsm.say(`Status: ${status}. Version ${fsm.code_id}.`))
+                    .then(() => 'start')
             },
             
             local_copy_matches: {
-                epsilon: () => this.open_code().then(() => 'start')
+                epsilon: () => fsm.open_code().then(() => 'start')
             },
     
             local_copy_differs: {
-                epsilon: () => this.warn(`Local copy of ${this.code_type} for ${this.record.name} differs from server's. `
+                epsilon: () => fsm.warn(`Local copy of ${fsm.code_type} for ${fsm.record.name} differs from server's. `
                                         + "Push it or remove it to proceed.")
-                   .then(() => this.open_code())
+                   .then(() => fsm.open_code())
                    .then(() => 'start')
             },
 
             no_local_copy: {
-                epsilon: () => this.write_file()
-                   .then(() => this.open_code())
+                epsilon: () => fsm.write_file()
+                   .then(() => fsm.open_code())
                    .then(() => 'start')
             } 
 
@@ -61,10 +69,14 @@ class NemoFSM extends FSM {
             })
             .then(codes => {
                 if ( codes.length > 0 ) {
-                    console.log("more than 0 codes");
-                    let temp = codes.pop();
+                    var j = 0;
+                    for (var i=0; i<codes.length; i++ ) {
+                        if ( codes[i].id > codes[j].id ) {
+                            j = i;
+                        }
+                    }
+                    let temp = codes[j];
                     fsm.code = temp.content;
-                    console.log(fsm.code);
                     fsm.code_id = temp.id;
                 } else {
                     fsm.code = `# ${fsm.code_type}`;
@@ -76,33 +88,44 @@ class NemoFSM extends FSM {
 
     push_code() {
 
+        let fsm = this;
         var controller;
-        if ( fsm.redord.model.model === "OperationType" ) {
+
+        if ( fsm.record.model.model === "OperationType" ) {
             controller = "operation_types";
         } else {
             controller = "libraries";
         }
+
         console.log({
-            id: fsm.code_id,
-            name: component_name == "library" ? "source" : component_name,
+            model: fsm.record.model.model,
+            controller: controller, 
+            id: fsm.record.id,
+            name: fsm.code_type == "library" ? "source" : fsm.code_type,
             content: fsm.code
         });
+
         return AQ.post( "/" + controller + "/code", {
-            id: fsm.code_id,
-            name: component_name == "library" ? "source" : component_name,
-            content: fsm.code
+            id: fsm.record.id,
+            name: fsm.code_type == "library" ? "source" : fsm.code_type,
+            content: fs.readFileSync(fsm.file_name) 
         })
 
     }    
 
     get file_name() {
         let str = this.context.storagePath + "/" + 
-               this.type + "/" + 
-               this.record.name + "/" + 
-               this.record.category + "/" + 
-               this.code_type;
+                 this.type + "/" + 
+                 this.record.category + "/";
+
+        if ( this.code_type == "library" ) {
+            str += this.record.name;
+        } else {
+            str += this.record.name + "/" + this.code_type;
+        }
+
         str += this.code_type == 'documentation' ? '.md' : '.rb';
-        // console.log(str);
+        console.log(str);
         return str
     }
 
@@ -111,10 +134,15 @@ class NemoFSM extends FSM {
         if ( !fs.existsSync(fsm.file_name) ) {
             return Promise.resolve("no_local_copy");
         } else {
-            if ( fs.readFileSync(fsm.file_name) == fsm.code ) {
-                return 'local_copy_matches';
+            if ( fs.readFileSync(fsm.file_name, "utf8") == fsm.code ) {
+                return Promise.resolve('local_copy_matches');
             } else {
-                return 'local_copy_differs';                
+                console.log("LOCAL: " + fsm.file_name)
+                console.log(fs.readFileSync(fsm.file_name, 'utf8'));
+                console.log("------------------------------");
+                console.log("ON SERVER")
+                console.log(fsm.code);
+                return Promise.resolve('local_copy_differs');
             }
         }
     }

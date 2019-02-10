@@ -69,6 +69,14 @@
 				  "light": "resources/light/status.svg",
 				  "dark": "resources/dark/status.svg"
 				}
+			},
+			{
+				"command": "extension.test",
+				"title": "Test",
+				"icon": {
+				  "light": "resources/light/test.svg",
+				  "dark": "resources/dark/test.svg"
+				}
 			}
 		],
 		"menus": {
@@ -92,6 +100,26 @@
 				{
 					"command": "extension.showStatus",
 					"when": "viewItem == CodeItem",
+					"group": "inline"
+				},	
+				{
+					"command": "extension.pullCode",
+					"when": "viewItem == TestCodeItem",
+					"group": "inline"
+				},
+				{
+					"command": "extension.pushCode",
+					"when": "viewItem == TestCodeItem",
+					"group": "inline"
+				},			
+				{
+					"command": "extension.showStatus",
+					"when": "viewItem == TestCodeItem",
+					"group": "inline"
+				},						
+				{
+					"command": "extension.test",
+					"when": "viewItem == TestCodeItem",
 					"group": "inline"
 				}			  
 			]
