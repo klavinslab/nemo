@@ -72,7 +72,7 @@ function activate(context) {
 	}
 
 	function test(codeItem) {
-		vscode.window.showWarningMessage("Server side testing not yet implemented.");
+		fsm(codeItem.record,codeItem.type.toLowerCase()).dispatch('test');
 	}	
 
 	context.subscriptions.push(vscode.commands.registerCommand('extension.connect',   connect));

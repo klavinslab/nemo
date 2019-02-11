@@ -2,6 +2,7 @@ const AQ = require("./aquarium");
 const FSM = require("./fsm");
 const vscode = require('vscode');
 const fs = require("fs-extra");
+const ejs = require('ejs');
 
 class NemoFSM extends FSM {
 
@@ -33,7 +34,10 @@ class NemoFSM extends FSM {
                     .then(() => 'start'),
                 status: () => fsm.code_status()
                     .then(status => fsm.say(`Status: ${status}. Version ${fsm.code_id}.`))
-                    .then(() => 'start')
+                    .then(() => 'start'),
+                test: () => fsm.push_code()
+                    .then(() => fsm.test())
+                    .then(()=>'start')
             },
             
             local_copy_matches: {
@@ -111,12 +115,51 @@ class NemoFSM extends FSM {
             content: fs.readFileSync(fsm.file_name) 
         })
 
-    }    
+    }
+
+    get test_results_file_name() {
+        return this.file_path + "/test_results.md";
+    }
+
+	write_test_results_file(results) {
+        let fsm = this;
+		return new Promise(function(resolve, reject) {
+            ejs.renderFile('./views/test_results_template.md', 
+              { results: results }, 
+              { filename: './views/test_results_template.md'}, 
+              function(err,str) {
+                fs.outputFile( fsm.test_results_file_name, str, function (err) {
+                    if (err) { console.log(err); reject(err) };
+                    console.log("ok")
+                    resolve();
+                });
+            });
+		}).catch(console.log)
+    }        
+    
+    open_test_results() {
+        let fsm = this;
+        return vscode.workspace.openTextDocument(vscode.Uri.file(fsm.test_results_file_name))
+            .then(doc => vscode.window.showTextDocument(doc))        
+    }
+
+    test() {
+        let fsm = this;
+        return AQ.get("/test/run/" + fsm.record.id)
+          .then(result => { console.log(result.data); return result})
+          .then(result => fsm.write_test_results_file(JSON.parse(result.data)))
+          .then(() => fsm.open_test_results())
+    }
+
+    get file_path() {
+        return this.context.storagePath + "/" + 
+               this.type + "/" + 
+               this.record.category + "/";
+    }
 
     get file_name() {
-        let str = this.context.storagePath + "/" + 
-                 this.type + "/" + 
-                 this.record.category + "/";
+
+        let str = this.file_path;
 
         if ( this.code_type == "library" ) {
             str += this.record.name;
