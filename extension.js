@@ -6,14 +6,13 @@ const NemoFSM = require("./nemo_fsm");
 
 function activate(context) {
 
-	let config = vscode.workspace.getConfiguration('nemo'),
-		initialized = false;
+	let config = vscode.workspace.getConfiguration('nemo');
 		
 	function connect() {
 		let operations_types = [];
 		let libraries = [];
-		if ( !initialized ) {
-			AQ.login(config.localAquariumServerUser, config.localAquariumServerPassword)
+
+		AQ.login(config.localAquariumServerUser, config.localAquariumServerPassword)
 			.then(() => AQ.OperationType.all())
 			.then(ots => operations_types = ots)
 			.then(() => AQ.Library.all())
@@ -37,10 +36,9 @@ function activate(context) {
 				);
 				initialized = true;
 			})
-			.catch(result => { console.log(result); vscode.window.showInformationMessage(result) } )
-		} else {
-			vscode.window.showInformationMessage("Already connected");
-		}
+			.catch(result => { 
+				console.log(result); vscode.window.showInformationMessage(result) 
+			})
 	}
 
 	function fsm(record, component) {
@@ -81,6 +79,8 @@ function activate(context) {
 	context.subscriptions.push(vscode.commands.registerCommand('extension.pushCode',  push));	
 	context.subscriptions.push(vscode.commands.registerCommand('extension.showStatus',status));	
 	context.subscriptions.push(vscode.commands.registerCommand('extension.test',      test));	
+
+	connect();
 	
 }
 

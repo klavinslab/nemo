@@ -1,7 +1,9 @@
 {
 	"name": "nemo",
+	"publisher": "klavins-lab",
 	"displayName": "Nemo",
 	"description": "Pull, edit, test, and push Aquarium protocols.",
+	"repository": "https://github.com/klavinslab/nemo",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.30.0"
@@ -148,17 +150,17 @@
 		"test": "node ./node_modules/vscode/bin/test"
 	},
 	"devDependencies": {
-		"@types/mocha": "^2.2.42",
-		"@types/node": "^8.10.40",
+		"@types/mocha": "^2.2.42",	
+		"@types/node": "^8.10.40",		
 		"eslint": "^4.19.1",
-		"extend": "^3.0.2",
-		"request": "^2.88.0",
-		"typescript": "^3.3.3",
-		"underscore": "^1.9.1",
+		"typescript": "^3.3.3",				
 		"vscode": "^1.1.29"
 	},
 	"dependencies": {
-		"fs-extra": "^7.0.1",
-		"ejs": "latest"
+		"extend": "^3.0.2",
+		"request": "^2.88.0",
+		"underscore": "^1.9.1",
+		"ejs": "latest",
+		"fs-extra": "^7.0.1"
 	}
 }

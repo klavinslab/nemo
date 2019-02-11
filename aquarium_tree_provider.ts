@@ -103,7 +103,7 @@ export class TopLevelItem extends vscode.TreeItem {
 	get is_top_level_item() { return true; }
 
 	get tooltip(): string {
-		return `Tool tip goes here`;
+		return `Expand`;
 	}
 
 	get description(): string {
@@ -133,7 +133,7 @@ export class CategoryItem extends vscode.TreeItem {
 	get is_category_item() { return true; }
 
 	get tooltip(): string {
-		return `Tool tip goes here`;
+		return `Expand`;
 	}
 
 	get description(): string {
@@ -162,7 +162,7 @@ export class OperationTypeItem extends vscode.TreeItem {
 	get is_operation_type_item() { return true; }		
 
 	get tooltip(): string {
-		return `Tool tip goes here`;
+		return `Expand`;
 	}
 
 	get description(): string {
@@ -217,7 +217,7 @@ export class CodeItem extends vscode.TreeItem {
 	get is_code_item() { return true; }	
 
 	get tooltip(): string {
-		return `Tool tip goes here`;
+		return `View code`;
 	}
 
 	get description(): string {

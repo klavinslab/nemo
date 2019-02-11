@@ -114,7 +114,7 @@ var TopLevelItem = /** @class */ (function (_super) {
     });
     Object.defineProperty(TopLevelItem.prototype, "tooltip", {
         get: function () {
-            return "Tool tip goes here";
+            return "Expand";
         },
         enumerable: true,
         configurable: true
@@ -151,7 +151,7 @@ var CategoryItem = /** @class */ (function (_super) {
     });
     Object.defineProperty(CategoryItem.prototype, "tooltip", {
         get: function () {
-            return "Tool tip goes here";
+            return "Expand";
         },
         enumerable: true,
         configurable: true
@@ -187,7 +187,7 @@ var OperationTypeItem = /** @class */ (function (_super) {
     });
     Object.defineProperty(OperationTypeItem.prototype, "tooltip", {
         get: function () {
-            return "Tool tip goes here";
+            return "Expand";
         },
         enumerable: true,
         configurable: true
@@ -241,7 +241,7 @@ var CodeItem = /** @class */ (function (_super) {
     });
     Object.defineProperty(CodeItem.prototype, "tooltip", {
         get: function () {
-            return "Tool tip goes here";
+            return "View code";
         },
         enumerable: true,
         configurable: true
