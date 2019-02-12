@@ -123,10 +123,11 @@ class NemoFSM extends FSM {
 
 	write_test_results_file(results) {
         let fsm = this;
+        let filename = fsm.context.asAbsolutePath("views/test_results_template.md");
 		return new Promise(function(resolve, reject) {
-            ejs.renderFile('views/test_results_template.md', 
+            ejs.renderFile(filename, 
               { results: results }, 
-              { filename: 'views/test_results_template.md'}, 
+              { filename: filename}, 
               function(err,str) {
                 fs.outputFile( fsm.test_results_file_name, str, function (err) {
                     if (err) { console.log(err); reject(err) };

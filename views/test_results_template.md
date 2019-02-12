@@ -16,7 +16,7 @@ Log
 ---
 <% if ( results.log ) { %>
 <%   for ( var i=0; i<results.log.length; i++ ) { %>
-- <%= results.log[i] %>
+- <%= results.log[i] _%>
 <%   } %>
 <% } %>
 
