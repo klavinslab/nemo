@@ -6973,7 +6973,7 @@ AQ.login = function(username, password) {
                 resolve(body);
             } else {
                 console.log("AQ: COULD NOT LOG IN");
-                reject("Could not log in to Aquarium server. Check Nemo's settings.")
+                reject("Could not log in to Aquarium server at " + AQ.config.aquarium_url + ". Check Nemo's settings.")
             }
         })
     })

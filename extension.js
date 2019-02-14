@@ -8,6 +8,8 @@ function activate(context) {
 
 	let config = vscode.workspace.getConfiguration('nemo');
 		
+	AQ.config.aquarium_url = config.localAquariumServerUrl;
+
 	function connect() {
 		let operations_types = [];
 		let libraries = [];

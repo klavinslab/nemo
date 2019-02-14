@@ -17,6 +17,11 @@ Installation
     - Enter in your server URL, your username, and your password. 
     - Then click on the **Aq** icon. You may need to click the Download button next to where it says "PACKAGE EXPLORER: AQUARIUM" to refresh the extension.
 
+Upgrading
+===
+
+As of this writing, to upgrade to a new version of Nemo, you need to uninstall the old version. To do so, first uninstall it vai VS Code, then remove the installation directory. On a Mac, this directory would be at ~/.vscode/extensions/klavins-lab.nemo-*
+
 Usage
 ===
 
@@ -66,4 +71,9 @@ To start VS Code in development mode:
 ```bash
 function code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $*; }
 code .
+```
+
+To build the package:
+```bash
+vsce package
 ```
