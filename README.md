@@ -17,7 +17,7 @@ Nemo is a VS Code Plugin for Editing and Testing Aquarium Protocols. See the [Aq
 
 ## Upgrading
 
-As of this writing, to upgrade to a new version of Nemo, you need to uninstall the old version. To do so, first uninstall it vai VS Code, then remove the installation directory. On a Mac, this directory would be at ~/.vscode/extensions/klavins-lab.nemo-\*
+As of this writing, to upgrade to a new version of Nemo, you need to uninstall the old version. To do so, first uninstall it via VS Code, then remove the installation directory. On a Mac, this directory would be at ~/.vscode/extensions/klavins-lab.nemo-\*
 
 ## Usage
 
