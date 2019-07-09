@@ -47,8 +47,8 @@ class ProtocolTest < ProtocolTestBase
     end
 
     def analyze
-        log "Hello from Nemo"
-        assert_equal @backtrace.last[:operation], "complete"
+        log('Hello from Nemo')
+        assert_equal(@backtrace.last[:operation], 'complete')
     end
 
 end
@@ -56,12 +56,19 @@ end
 
 The `ProtocolTestBase` class defines these methods:
 
-- `random n`: Creates n random operations to use to test the protocol.
-- `log msg`: Save a message to the log for the test
+- `add_random_operations(n)`: Creates n random operations to use to test the protocol.
+- `add_operation`: Creates an operation of the operation type to the test.
+- `log(msg)`: Save a message to the log for the test
+- `operations_present?`: indicates whether there are operations in the test.
+- `error?`: indicates whether execution of the operations resulted in an error.
+- `error_message`: Returns the message if there is an error.
+- `find_display_by_title(title)`: Returns a hash containing the output for a slide with the given title string.
+- `displays_with_content`: Returns an array hashes representing the output slides of the test that are not empty.
+- `displays`: Returns an array of hashes representing the output slides of the test.
 
 You must define a `setup` method that defines the operations your test will use.
-The `random` method does this, but you can also define the instance variable `@operations` directly.
-This method gets called before the protocol is executed.
+The `setup` method gets called before the protocol is executed.
+Note that when you create operations, you can use the `set_input(input_name, value)
 
 You must also define the `analyze` method, which will be called after the execution of the protocol has completed.
 In it, you can access the @backtrace instance variable which will contain the backtrace of the job that was used in the test
