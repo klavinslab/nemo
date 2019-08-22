@@ -6,10 +6,10 @@ export class AquariumTreeProvider implements vscode.TreeDataProvider<vscode.Tree
 
 	private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | undefined> = new vscode.EventEmitter<vscode.TreeItem | undefined>();
 	readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined> = this._onDidChangeTreeData.event;
-	private operation_types;
-	private libraries;
+	private operation_types: any[] | object[];
+	private libraries: any[] | object[];
 
-	constructor(ots,libs) {
+	constructor(ots: any[],libs: any[]) {
 		this.operation_types = ots;
 		this.libraries = libs;
 	}
