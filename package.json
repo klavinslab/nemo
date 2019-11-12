@@ -4,7 +4,7 @@
 	"displayName": "Nemo",
 	"description": "Pull, edit, test, and push Aquarium protocols.",
 	"repository": "https://github.com/klavinslab/nemo",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"engines": {
 		"vscode": "^1.30.0"
 	},
