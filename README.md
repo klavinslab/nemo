@@ -79,7 +79,7 @@ In it, you can access the @backtrace instance variable which will contain the ba
 The script `markdown_converter.py` can be used to convert the results of tests to properly-formatted markdown (with some HTML). To use it, create a directory with a symbolic link to the somewhat obscure directory where Nemo stores local files, then copy `markdown_converter.py` to there:
 
 ```bash
-ln -s '/Users/devin/Library/Application Support/Code/User/workspaceStorage/d241a345c1ad1b26cfd4fc7181fd618a/klavins-lab.nemo' nemo_protocols
+ln -s '/Users/devin/Library/Application Support/Code/User/workspaceStorage/<long-alphanumeric>/klavins-lab.nemo' nemo_protocols
 cp path/to/markdown_converter.py nemo_protocols
 ```
 
