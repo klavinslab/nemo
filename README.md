@@ -75,6 +75,22 @@ In it, you can access the @backtrace instance variable which will contain the ba
 
 `ProtocolTestBase` includes [MiniTest::Assertions](http://docs.seattlerb.org/minitest/Minitest/Assertions.html) such as `assert_equal` that you can use to assert things about the resulting backtrace.
 
+### Markdown Converter
+The script `markdown_converter.py` can be used to convert the results of tests to properly-formatted markdown (with some HTML). To use it, create a directory with a symbolic link to the somewhat obscure directory where Nemo stores local files, then copy `markdown_converter.py` to there:
+
+```bash
+ln -s '/Users/devin/Library/Application Support/Code/User/workspaceStorage/d241a345c1ad1b26cfd4fc7181fd618a/klavins-lab.nemo' nemo_protocols
+cp path/to/markdown_converter.py nemo_protocols
+```
+
+After you run a test, open up the VS Code terminal, navigate to `nemo_protocols` and run:
+
+```bash
+python3 markdown_converter.py 
+```
+
+The script will reformat any files it finds named `test_results.md`. You can then view the markdown by right-clicking on the `test_results.md` tab in VS Code and selecting **Open Preview**. You may have to click back and forth on the tabs once to get `test_results.md` to reload.
+
 ## Development
 
 To compile the single typescript file (will produce error messages):
